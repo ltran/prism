@@ -8,7 +8,8 @@ const STORES_SET_PATH = `${SERVICE_CACHE_PREFIX}:sets:stores`
 const PATHS = {
   centre: `${SERVICE_CACHE_PREFIX}:centres`,
   store: `${SERVICE_CACHE_PREFIX}:stores`,
-  retailer: `${SERVICE_CACHE_PREFIX}:retailers`
+  retailer: `${SERVICE_CACHE_PREFIX}:retailers`,
+  category: `${SERVICE_CACHE_PREFIX}:categories`,
 }
 
 function validateKeys (options, keys) {
@@ -85,8 +86,14 @@ function get (options, callback) {
       return callback(err)
     }
 
-    logger.debug(options.logId, `Successfully retrieved data ` +
-                                `for key '${options.key}'`)
+    if (data) {
+      logger.debug(options.logId, `Successfully retrieved data ` +
+                   `for key '${options.key}'`)
+
+    } else {
+      logger.debug(options.logId, `No data found for key '${options.key}'`)
+    }
+
     return callback(err, JSON.parse(data))
   })
 }
@@ -195,6 +202,8 @@ module.exports = {
   STORES_SET_PATH: STORES_SET_PATH,
   PATHS: PATHS,
   redisGet: redisGet,
+  get: get,
+  set: set,
   getCentres: getCentres,
   updateCache: updateCache
 }

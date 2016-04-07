@@ -3,10 +3,10 @@
 module.exports = function combineResults (results) {
   var returnedData = []
   var categoriesData = results.categoriesData
-  var centresData = results.centresData
+  var centreData = results.centreData
 
   results.storesData.forEach(function(store) {
-    store.centre = centresData[0]['name']
+    store.centre = centreData.name
     store.categories = categoriesData[store.store_id]
     returnedData.push(store)
   })

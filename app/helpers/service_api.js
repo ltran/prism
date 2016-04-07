@@ -84,6 +84,7 @@ function get (options, callback) {
         }
       }
 
+      requestUrl = requestUrl.replace(/.api_key=.*/, '')
       logger.debug(logId, `Successfully retrieved ${options.resourceName || ''} data from ${requestUrl}`)
       return callback(null, options.returnAllData ? body : body.data)
     }
@@ -95,9 +96,24 @@ function get (options, callback) {
 //     recordIdentifier: 'bondijunction', logId: 1234,
 //     fieldsToRetrieve: ['name', 'store_id', '_links', 'centre_id'] }
 function serviceGet (options, callback) {
-  if (process.env.USE_REDIS === 'true') { return redisClient.redisGet(options, callback) }
+  var requestUrl = serviceUrl(options)
+  requestUrl = requestUrl.replace(/.api_key=.*/, '')
 
-  return get(options, callback)
+  redisClient.get({ key: requestUrl, logId: options.logId }, function (redisErr, redisData) {
+    if (redisErr) {
+      return callback(Boom.wrap(redisData))
+    }
+
+    if (redisData) {
+      return callback(null, redisData)
+    } else {
+      get(options, function (getError, serviceData) {
+        redisClient.set({ key: requestUrl, value: serviceData, logId: options.logId}, function (getError) {
+          return callback(getError, serviceData)
+        })
+      })
+    }
+  })
 }
 
 module.exports = {
