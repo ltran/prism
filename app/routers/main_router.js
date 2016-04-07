@@ -37,7 +37,7 @@ function mainHandler (req, res) {
     async.map(categoryIds, function (categoryId, callback) {
       var categoryOptions = { categoryId: categoryId, logId: logId }
       category.get(categoryOptions, function (err, data) {
-        return callback(err, data.name)
+        return callback(err, { id: data.category_id, name: data.name })
       })
     }, cb)
   }

@@ -99,6 +99,10 @@ function serviceGet (options, callback) {
   var requestUrl = serviceUrl(options)
   requestUrl = requestUrl.replace(/.api_key=.*/, '')
 
+  if (process.env.USE_REDIS === 'false') {
+    return get(options, callback)
+  }
+
   redisClient.get({ key: requestUrl, logId: options.logId }, function (redisErr, redisData) {
     if (redisErr) {
       return callback(Boom.wrap(redisData))
@@ -114,6 +118,7 @@ function serviceGet (options, callback) {
       })
     }
   })
+
 }
 
 module.exports = {
