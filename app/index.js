@@ -8,7 +8,6 @@ var app = express()
 var mainRouter = require('./routers/main_router')
 var httpLogger = require('../lib/http_logger')
 var passport = require('passport')
-var herokuLockdown = require('../lib/heroku_lockdown')
 
 app.disable('x-powered-by')
 
