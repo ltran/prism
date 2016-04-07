@@ -12,7 +12,4 @@ exports.get = function (options, callback) {
   }
 
   return serviceApi.serviceGet(categoryOptions, callback)
-  // return serviceApi.serviceGet(categoryOptions, function (err, data) {
-  //   return callback(err, data.name)
-  // })
 }

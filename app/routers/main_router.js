@@ -22,7 +22,7 @@ function mainHandler (req, res) {
   var defaultApiKey = { 'api_key': process.env.WESTFIELD_API_KEY }
 
   function fetchCentresData (cb) {
-    var centreOptions = { centreIds: [centreId], logId: logId }
+    var centreOptions = { centreId: centreId, logId: logId }
 
     centre.get(centreOptions, cb)
   }
@@ -55,7 +55,7 @@ function mainHandler (req, res) {
   }
 
   async.auto({
-    centresData: fetchCentresData,
+    centreData: fetchCentresData,
     storesData: fetchStoresData,
     categoriesData: ['storesData', fetchStoreCategoryData]
   }, function (err, results) {
