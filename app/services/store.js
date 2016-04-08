@@ -10,6 +10,8 @@ exports.get = function (options, callback) {
     resourceName: 'store'
   }
 
+  if (options.page) { storeOptions.query.page = options.page }
+
   return serviceApi.serviceGet(storeOptions, callback)
 }
 

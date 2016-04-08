@@ -14,15 +14,20 @@ module.exports = function combineResults (results) {
     returnedData.data.push(store)
   })
 
-  _.each(categoriesData, function (item) {
-    if (item.length > 0) {
-      returnedData.includes.push({
-        type: 'categories',
-        category_id: item[0].id,
-        name: item[0].name
+  var categories = {}
+  _.each(categoriesData, function (category) {
+    if (category.length > 0) {
+      category.forEach(function (cat) {
+        categories[cat.id] = cat.name
       })
     }
   })
+
+  returnedData.includes.push(
+    _.map(categories, function(val, key) {
+      return { type: 'category', category_id: key, name: val }
+    })
+  )
 
   returnedData.includes.push({
     type: 'centre',
