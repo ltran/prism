@@ -84,7 +84,7 @@ function get (options, callback) {
         }
       }
 
-      requestUrl = requestUrl.replace(/.api_key=.*/, '')
+      requestUrl = requestUrl.replace(/.api_key=.{32}/, '')
       logger.debug(logId, `Successfully retrieved ${options.resourceName || ''} data from ${requestUrl}`)
       return callback(null, options.returnAllData ? body : body.data)
     }
@@ -97,7 +97,8 @@ function get (options, callback) {
 //     fieldsToRetrieve: ['name', 'store_id', '_links', 'centre_id'] }
 function serviceGet (options, callback) {
   var requestUrl = serviceUrl(options)
-  requestUrl = requestUrl.replace(/.api_key=.*/, '')
+
+  requestUrl = requestUrl.replace(/.api_key=.{32}/, '')
 
   if (process.env.USE_REDIS === 'false') {
     return get(options, callback)
