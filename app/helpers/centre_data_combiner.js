@@ -1,7 +1,9 @@
 var _ = require('underscore')
 /* eslint-disable camelcase */
 
-module.exports = function combineResults (results) {
+module.exports = function combineResults (includes, results) {
+  var includes = includes.split(",")
+
   var returnedData = {
     data: [],
     includes: []
@@ -23,17 +25,21 @@ module.exports = function combineResults (results) {
     }
   })
 
-  returnedData.includes.push(
-    _.map(categories, function(val, key) {
-      return { type: 'category', category_id: key, name: val }
-    })
-  )
+  if (includes.indexOf('category') >= 0) {
+    returnedData.includes.push(
+      _.map(categories, function(val, key) {
+        return { type: 'category', category_id: key, name: val }
+      })
+    )
+  }
 
-  returnedData.includes.push({
-    type: 'centre',
-    centre_id: centreData.centre_id,
-    name: centreData.name
-  })
+  if (includes.indexOf('centre') >= 0) {
+    returnedData.includes.push({
+      type: 'centre',
+      centre_id: centreData.centre_id,
+      name: centreData.name
+    })
+  }
 
   return returnedData
 }

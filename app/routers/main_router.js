@@ -19,6 +19,7 @@ function mainHandler (req, res) {
   var logId = req.headers['x-request-id']
   var centreId = req.params['centreId']
   var page = req.query.page
+  var includes = req.query.includes
   var response = { healthy: true, message: 'success', centreId: centreId }
   var defaultApiKey = { 'api_key': process.env.WESTFIELD_API_KEY }
 
@@ -63,12 +64,12 @@ function mainHandler (req, res) {
     if (err)
       return res.json(err)
 
-    var data = combineData(results)
+    var data = combineData(includes, results)
 
     return res.json(data)
   })
 }
 
-router.get('/centres/:centreId', mainHandler)
+router.get('/stores/:centreId', mainHandler)
 
 module.exports = router
