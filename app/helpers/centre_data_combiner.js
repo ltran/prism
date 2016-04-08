@@ -2,7 +2,7 @@ var _ = require('underscore')
 /* eslint-disable camelcase */
 
 module.exports = function combineResults (includes, results) {
-  var includes = includes.split(",")
+  includes = (includes || '').split(",")
 
   var returnedData = {
     data: [],
